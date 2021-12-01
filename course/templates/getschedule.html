@@ -1,0 +1,146 @@
+{% extends 'base/base.html' %}
+
+{% block body %}
+<style>
+    table{
+        border: 1px solid black;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    td{
+        border: 1px solid black;
+        padding:20px;
+    }
+</style>
+
+<div class="container" style="text-align: center; padding-top: 40px; padding-bottom: 40px;">
+    <h1>Paste Schedule Here</h1> 
+    </br>
+    <textarea id="schedule_text" rows="5" cols="100" id="multiLineInput"></textarea>
+</div>
+
+<div id="output" class="container" style="text-align: center;">
+    <span id="outputtext">Something</span>
+</div>
+
+<div class="container" style="text-align: center; padding-top: 40px;">
+    <form>
+        <button type="submit" class="btn btn-primary" style="background-color:#337137; border-color: #337137;">Submit</button>
+    </form>
+</div>
+
+<script>
+    
+    function isNumericString(string){
+        for(let i=0; i<string.length; i++){
+            if(isNaN(string[i])){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function isNonNumericString(string){
+        for(let i=0; i<string.length; i++){
+            if(!isNaN(string[i])){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function isCapsString(string){
+        return string == string.toUpperCase();
+    }
+
+    function isClass(string){
+        if(string.length < 8){
+            return false;
+        }
+        
+        let temp = string[0]+string[1]+string[2]+string[3];
+        let temp2 = string[4]+string[5]+string[6]+string[7];
+
+        return(isNonNumericString(temp) && isCapsString(temp) && isNumericString(temp2))
+    }
+    
+    function getSchedule(){
+        let text = document.getElementById("schedule_text").value;
+
+        text = text.split('\t');
+
+        let result = [];
+
+        for(let i=0; i<text.length; i++){
+            let temp = text[i].split('\n');
+            for(let j=0; j<temp.length; j++){
+                result.push(temp[j]);
+            }
+        }
+
+        let classes = [];
+
+        let temp = [];
+
+        let found = false;
+
+        for(let i=0; i<result.length; i++){
+            if(isClass(result[i]) && found == false){
+                found = true;
+                temp = [];
+                temp.push(result[i]);
+                //console.log("Found a class for the first time");
+            }
+            else if(!isClass(result[i]) && found == false){
+                //Do nothing 
+                //console.log("Ignoring");
+            }
+            else if(!isClass(result[i]) && found == true){
+                temp.push(result[i]);
+                //console.log("Adding class info to temp");
+            }
+            else if(isClass(result[i]) && found == true){
+                classes.push(temp);
+                temp = [];
+                temp.push(result[i]);
+                //console.log("Found new class. Saving the other one and starting this one");
+            }
+        }
+        classes.push(temp);
+
+        return classes;
+
+    }
+
+    function generateTable(){
+        data = getSchedule();
+
+        //console.log(data);
+
+        let result = '<table>';
+
+        for(let i=0; i<data.length; i++){
+            result += '<tr>'
+            for(let j=0; j<data.length; j++){
+                result += '<td>'+data[i][j]+'</td>';
+            }
+            result += '</tr>'
+        }
+
+        result += '</table';
+        
+        let output = document.getElementById("output");
+
+        output.innerHTML = result;
+
+        //console.log(output);
+    }
+
+    let interval = 400;
+    var timer = window.setInterval(generateTable, interval);
+</script>
+
+{% endblock %}

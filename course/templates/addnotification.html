@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Add Class{% endblock %}
+
+{% block body %}
+
+    <style>
+        textarea{
+            height: 50px;
+            margin-left: 12px;
+            margin-right: 12px;
+            max-width: 448px !important; 
+        }
+    </style>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="container" style="background-color:white; max-width: 500px; margin-top: 40px; border:1px solid black; border-radius: 5px; padding:0px; padding-bottom: 15px;">
+            <div class="container" style="padding-top:10px; padding-bottom:10px; background-color: #337137; margin-bottom: 10px;">
+                <h1 style="color:white;">Add Notification</h1>
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput1" class="form-label">Name</label>
+                {{form.name}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput2" class="form-label">Date</label>
+                {{form.date}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <div class="row">
+                    <label for="exampleFormControlInput3" class="form-label">Description</label>
+                </div>
+                <div class="row">
+                    {{form.description}}
+                </div>
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px; text-align: center;">
+                <button type="submit" class="btn btn-primary" style="background-color:#337137; border-color: #337137;">Add Notification</button>
+            </div>
+            {{form.error}}
+        </div>
+    </form>
+
+    <script>
+        let inputs = document.querySelectorAll("input");
+        for(let i=0; i<inputs.length; i++){
+            inputs[i].className = "form-control";
+        }
+
+        let textarea = document.querySelectorAll("textarea");
+        for(let i=0; i<textarea.length; i++){
+            textarea[i].className = "form-control";
+        }
+
+        let date = document.getElementById("id_date");
+        date.type = "date";
+    </script>
+
+{% endblock %}

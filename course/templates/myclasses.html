@@ -1,0 +1,134 @@
+{% extends 'base/course_base.html' %}
+
+{% block title %}My Classes{% endblock %}
+
+{% block content %}
+
+<style>
+    h1{
+        margin-bottom: 30px;
+    }
+
+    table{
+        border: 1px solid black;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    thead{
+        background-color: #337137;
+        color:white;
+        font-weight: bold;
+    }
+
+    tbody{
+        background-color: white;
+    }
+
+    td{
+        border: 1px solid black;
+        padding:15px;
+        text-align: center;
+    }
+
+    .class_button{
+        color: black;
+    }
+    
+    .delete-button{
+        color:red;
+        cursor: pointer;
+    }
+
+    .btn-primary{
+        background-color:#337137;
+    }
+
+    .btn-primary:hover{
+        background-color:#337137;
+    }
+
+    .btn-primary:focus{
+        background-color:#337137;
+    }
+
+    .delete-column{
+        width: 110px;
+    }
+</style>
+
+<div class="container" style="text-align: center; padding-top: 50px; padding-bottom: 40px;">
+    <h1><span style="color:#337137;">My Classes</span></h1> 
+
+    <a style="background-color:#337137; border-color: #337137;" class="btn btn-primary" href="/addclass" role="button">+ Add Class</a>
+
+    <table id="classes_table" style="margin-top: 20px;">
+        <thead>
+            <tr>
+            <td>Course</td>
+            <td>Name</td>
+            <td>Section</td>
+            <td>Credits</td>
+            <td>Schedule</td>
+            <td>Classroom</td>
+            <td>Professor</td>
+            <td>Delete</td>
+            </tr>
+        </thead>
+        <tbody>
+            {% for class in classes %}
+                <tr>
+                    <td><a class = "class_button" href="/myclasses/{{class.course_code}}">{{class.course_code}}</a></td>
+                    <td><a class = "class_button" href="/myclasses/{{class.course_code}}">{{class.course_name}}</a></td>
+                    <td>{{class.section}}</td>
+                    <td>{{class.credits}}</td>
+                    <td>{{class.schedule}}</td>
+                    <td><a class = "class_button" href="/myclasses/{{class.course_code}}">{{class.classroom}}</a></td>
+                    <td>{{class.professor}}</td>
+                    <td class="delete-column"><span class="delete-button" data-bs-toggle="modal" data-bs-target="#exampleModal{{class.id}}"><i class="fas fa-times"></i></span></td>
+                    <div class="modal fade" id="exampleModal{{class.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete this class?</h5>
+                              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <span>Deleted classes cannot be recovered</span>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/delete/class/{{class.id}}"><button type="button" class="btn btn-primary">I'm Sure</button></a>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </tr>
+        
+            {% endfor %}
+        </tbody>
+    </table>
+</div> 
+
+{% endblock %}
+
+{% block events %}
+
+    ,{
+    id: 4,
+    name: "Something else",
+    start: "2021-10-08T06:00:00",
+    end: "2021-10-08T06:00:00"
+    }
+
+{% endblock %}
+
+{% block notification_title %}
+    {{notification_title}}
+{% endblock %}
+
+{% block notification_text %}
+    {{notification_text}}
+{% endblock %}

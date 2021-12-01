@@ -1,0 +1,33 @@
+{% extends 'base/course_base.html' %}
+
+{% block title %}{{class_code}}{% endblock %}
+
+{% block content %}
+    {% if class_found %}
+
+        <style>
+            h1{
+                margin-bottom: 30px;
+            }
+        </style>
+
+        <div class="container" style="text-align: center; padding-top: 50px; padding-bottom: 40px;">
+            <h1><span style="color:#337137;">{{class_code}}</span></h1> 
+            <h1><span style="color:#337137;">{{building_name}}</span></h1> 
+
+            {% autoescape off %}
+                {{ map_frame }}
+            {% endautoescape %}
+        </div>
+
+
+
+    {% else %}
+
+    <div class="container" style="text-align: center; padding-top: 50px; padding-bottom: 40px;">
+        <h1><span style="color:#337137;">Class Not Found</span></h1> 
+    </div>
+
+    {% endif %}
+
+{% endblock %}

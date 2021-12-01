@@ -1,0 +1,56 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Add Class{% endblock %}
+
+{% block body %}
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="container" style="background-color:white; max-width: 500px; margin-top: 40px; border:1px solid black; border-radius: 5px; padding:0px; padding-bottom: 15px;">
+            <div class="container" style="padding-top:10px; padding-bottom:10px; background-color: #337137; margin-bottom: 10px;">
+                <h1 style="color:white;">Add Class</h1>
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput1" class="form-label">Class Code</label>
+                {{form.course_code}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput2" class="form-label">Class Name</label>
+                {{form.course_name}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput3" class="form-label">Section</label>
+                {{form.section}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput4" class="form-label">Credits</label>
+                {{form.credits}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput5" class="form-label">Schedule</label>
+                {{form.schedule}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput6" class="form-label">Classroom</label>
+                {{form.classroom}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px;">
+                <label for="exampleFormControlInput7" class="form-label">Professor</label>
+                {{form.professor}}
+            </div>
+            <div class="mb-3" style="padding-left: 25px; padding-right: 25px; text-align: center;">
+                <button type="submit" class="btn btn-primary" style="background-color:#337137; border-color: #337137;">Add Class</button>
+            </div>
+            {{form.error}}
+            <span style="padding-left:25px;">Import Entire Schedule:</span> <a href="/getschedule">Click Here</a>
+        </div>
+    </form>
+
+    <script>
+        let inputs = document.querySelectorAll("input");
+        for(let i=0; i<inputs.length; i++){
+            inputs[i].className = "form-control";
+        }
+    </script>
+
+{% endblock %}

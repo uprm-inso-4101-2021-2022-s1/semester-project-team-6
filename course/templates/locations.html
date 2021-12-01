@@ -1,0 +1,118 @@
+{% extends 'base/base.html' %}
+
+{% block body %}
+
+<style>
+    #title{
+        margin-top: 60px;
+        text-align: center;
+    }
+
+    table{
+        border: 1px solid black;
+        min-width: 500px;
+        font-size: 20px;
+    }
+    
+    thead{
+        background-color: #337137;
+        color:white;
+        font-weight: bold;
+    }
+
+    tbody{
+        background-color: white;
+    }
+
+    td{
+        border: 1px solid black;
+        padding:15px;
+        text-align: center;
+    }
+
+    .code{
+        font-weight: bold;
+        width: 100px;
+    }
+
+    .location{
+        width: 100px;
+    }
+
+    .row{
+        margin-top: 60px;
+        margin-left: 200px;
+        margin-right: 200px;
+    }
+
+    .map-marker{
+        cursor: pointer;
+    }
+    
+    .map-marker:hover{
+        color:blue;
+    }
+
+    .instruction{
+        text-align: center;
+        margin-top: 20px;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div id="title" class="container-fluid">
+        <h1><span style="color:#337137;">Locations</span></h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <table id="classes_table" style="margin-top: 40px;">
+            <thead>
+                <tr>
+                <td>Code</td>
+                <td>Name</td>
+                <td class="location-col">Location</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for location in locations %}
+                    <tr>
+                        <td class="code">{{location.building_code}}</td>
+                        <td>{{location.building_name}}</td>
+                        <td class="location"><span class="map-marker" onclick="changeMap(dict.{{location.building_code}})"><i class="fas fa-map-marker-alt"></i></span></td>
+                    </tr>
+            
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="map-container" class="col-6">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3789.9788737744393!2d-67.143091184623!3d18.210894583323487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c02b3ccfeb38ac3%3A0xd285b5144bc722b0!2sUniversidad%20de%20Puerto%20Rico%20-%20Recinto%20de%20Mayag%C3%BCez%20(RUM)!5e0!3m2!1sen!2spr!4v1638045220143!5m2!1sen!2spr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</div>
+
+<script>
+    var dict = {
+    
+    {% autoescape off %}
+
+    {% for location in locations %}
+
+        {{location.building_code}} : '{{location.embed}}',
+
+    {% endfor %}
+
+    {% endautoescape %}
+
+    }
+    
+    function changeMap(newMap){
+        console.log(newMap);
+        document.getElementById("map-container").innerHTML = newMap;
+    }
+</script>
+
+{% endblock %}

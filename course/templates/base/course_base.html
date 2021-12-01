@@ -1,0 +1,156 @@
+{% extends 'base/base.html' %}
+
+{% load static %}
+
+{% block body %}
+
+<style>
+    h3{
+        margin-bottom: 20px;
+        color:#337137;
+    }
+
+    #notifications-box{
+        /*border: 1px solid black;*/
+        padding: 10px;
+        margin-bottom: 45px;
+        border-radius: 10px;
+        background-color: #337137;
+        max-width: 370px;
+    }
+
+    #notification{
+        background-color: white;
+        border-radius: 5px;
+        min-height: 100px;
+        max-height: 180px;
+        overflow-y: hidden;
+        text-align: left;
+    }
+
+    .notification-box-title{
+        color:white;
+    }
+
+    .notification-title{
+        color:#337137;
+        font-weight: bold;
+    }
+
+</style>
+
+<div class="row">
+    <div class="col-8">
+        {% block content %}No content found{% endblock %}
+    </div>
+
+    <div class="col-4">
+        <div class="container" style="text-align: center; padding-top: 80px; padding-bottom: 40px;">
+            
+
+            <div id="notifications-box" class="container">
+                <h3 class="notification-box-title"><i class="fas fa-bell"></i> Notifications</h3>
+                
+                <div id="notification" class="container">
+                    {% for notification in notifications %}
+                        <br>
+                        <a href="/notifications" class="notification-title"><i class="fas fa-circle"></i> {{notification.name}} - {{notification.date}}</a>
+                        <br>
+                    {% endfor %}
+                    
+                    &nbsp</br>
+                    
+                </div>
+            </div>
+            
+            <h3>Calendar</h3>
+
+            <!-- Import js file from CDN -->
+            <script src="https://cdn.jsdelivr.net/npm/color-calendar@1.0.5/dist/bundle.js"></script>
+
+            <!-- Link css file from CDN -->
+            <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/color-calendar@1.0.5/dist/css/theme-basic.css"
+            >
+            <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/color-calendar@1.0.5/dist/css/theme-glass.css"
+            >
+
+            <!-- Import fonts from Google Fonts -->
+            <link
+                href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+                rel="stylesheet"
+            >
+            <link
+                href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+                rel="stylesheet"
+            >
+
+            <div id="calendar"></div>
+
+            <p style="margin-top: 20px;" id="calendar_event">Current Event</p>
+
+            <script>
+                //<p style="margin-top: 20px;" id="calendar_date">Current Date</p>
+                //let calendar_date = document.getElementById("calendar_date");
+                let calendar_event = document.getElementById("calendar_event");
+                
+                let cal = new Calendar({
+                id: "#calendar",
+                theme: "basic",
+                primaryColor: "#337137",
+                headerColor: "#337137",
+                weekdayType: "short",
+                border: "5px solid rgba(0, 0, 0, 0.1)",
+                eventsData: [
+                    /*{
+                    id: 1,
+                    name: "French class",
+                    start: "2021-12-07T06:00:00",
+                    end: "2021-12-08T06:00:00"
+                    },
+                    {
+                    id: 2,
+                    name: "Blockchain 101",
+                    start: "2021-12-07T06:00:00",
+                    end: "2021-12-08T06:00:00"
+                    },
+                    {
+                    id: 3,
+                    name: "Other Event",
+                    start: "2021-10-07T06:00:00",
+                    end: "2021-10-07T06:00:00"
+                    }*/
+                    {% autoescape off %}
+                        {{ calendarEvents }}
+                    {% endautoescape %}
+                ],
+                dateChanged: (currentDate, events) => {
+                    //calendar_date.textContent =  currentDate;
+
+                    calendar_event.textContent = "Entries: ";
+
+                    if(events.length > 0){
+                        calendar_event.textContent += events[0]["name"];
+                        for(let i=1; i<events.length; i++){
+                            calendar_event.textContent += ", " + events[i]["name"];
+                        }
+                    }
+                    else{
+                        calendar_event.textContent += "None";
+                    }
+
+                },
+                monthChanged: (currentDate, events) => {
+                    //console.log("month change", currentDate, events);
+                }
+                });
+
+            </script>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
